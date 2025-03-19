@@ -16,6 +16,6 @@ pre-commit:
       glob: "*.go"
       run: go tool golangci-lint run {staged_files}
 
-    - name: go test -cover
+    - name: go test
       glob: "*.go"
-      run: go test -cover {staged_files}
+      run: go test -v {staged_files}
