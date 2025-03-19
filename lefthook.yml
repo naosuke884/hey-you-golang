@@ -1,0 +1,21 @@
+commit-msg:
+  jobs:
+    - name: commitlint
+      run: cat {1} | go tool go-commitlinter
+
+pre-commit:
+  jobs:
+    - name: go mod tidy
+      run: go mod tidy
+
+    - name: go fmt
+      glob: "*.go"
+      run: go fmt {staged_files}
+
+    - name: golangci-lint run
+      glob: "*.go"
+      run: go tool golangci-lint run {staged_files}
+
+    - name: go test
+      glob: "*.go"
+      run: go test -v {staged_files}
