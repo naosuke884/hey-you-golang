@@ -5,41 +5,40 @@ name: Go
 
 on:
   pull_request:
-    branches: [ "main", "develop" ]
+    branches: ["main", "develop"]
 
 jobs:
-
   build-and-test:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./go
+        working-directory: .
     steps:
-    - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-    - name: Set up Go
-      uses: actions/setup-go@v4
-      with:
-        go-version: '1.22'
-    
-    - name: Cache Go modules
-      uses: actions/cache@v3
-      with:
-        path: ~/go/pkg/mod
-        key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
-        restore-keys: |
-          ${{ runner.os }}-go-
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: "1.22"
 
-    - name: Cache Go build
-      uses: actions/cache@v3
-      with:
-        path: ~/go/build-cache
-        key: ${{ runner.os }}-build-${{ hashFiles('./server/**') }}
-        restore-keys: |
-          ${{ runner.os }}-build-
+      - name: Cache Go modules
+        uses: actions/cache@v3
+        with:
+          path: ~/go/pkg/mod
+          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-go-
 
-    - name: Build
-      run: go build -v ./...
+      - name: Cache Go build
+        uses: actions/cache@v3
+        with:
+          path: ~/go/build-cache
+          key: ${{ runner.os }}-build-${{ hashFiles('./server/**') }}
+          restore-keys: |
+            ${{ runner.os }}-build-
 
-    - name: Test
-      run: go test -v ./...
+      - name: Build
+        run: go build -v ./...
+
+      - name: Test
+        run: go test -v ./...
